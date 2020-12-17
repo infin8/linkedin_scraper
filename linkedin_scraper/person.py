@@ -206,12 +206,18 @@ class Person(Scraper):
                     "pv-entity__school-name"
                 ).text.strip()
 
+                degree = None
+                from_date, to_date = (None, None)
+                    
                 try:
                     degree = (
                         school.find_element_by_class_name("pv-entity__degree-name")
                         .find_elements_by_tag_name("span")[1]
                         .text.strip()
                     )
+                except:
+                    pass
+                try:
                     times = (
                         school.find_element_by_class_name("pv-entity__dates")
                         .find_elements_by_tag_name("span")[1]
@@ -219,8 +225,7 @@ class Person(Scraper):
                     )
                     from_date, to_date = (times.split(" ")[0], times.split(" ")[2])
                 except:
-                    degree = None
-                    from_date, to_date = (None, None)
+                    pass
                 education = Education(
                     from_date=from_date, to_date=to_date, degree=degree
                 )
@@ -275,9 +280,15 @@ class Person(Scraper):
                     self.add_accomplishment(accomplishment)
         except:
             pass
+        
+        if close_on_complete:
+            driver.quit()
 
+    def get_connections():
         # get connections
+        raise Exception('not implemented')
         try:
+            ra
             driver.get("https://www.linkedin.com/mynetwork/invite-connect/connections/")
             _ = WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "mn-connections"))
