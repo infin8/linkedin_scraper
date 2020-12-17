@@ -139,9 +139,15 @@ class Person(Scraper):
         if exp is not None:
             for position in exp.find_elements_by_class_name("pv-position-entity"):
                 position_title = position.find_element_by_tag_name("h3").text.strip()
-
+                
+                company = None
+                from_date, to_date, duration, location = (None, None, None, None)
+                
                 try:
                     company = position.find_elements_by_tag_name("p")[1].text.strip()
+                except:
+                    pass
+                try:
                     times = str(
                         position.find_elements_by_tag_name("h4")[0]
                         .find_elements_by_tag_name("span")[1]
@@ -154,14 +160,16 @@ class Person(Scraper):
                         .find_elements_by_tag_name("span")[1]
                         .text.strip()
                     )
+                except:
+                    pass
+                try:
                     location = (
                         position.find_elements_by_tag_name("h4")[2]
                         .find_elements_by_tag_name("span")[1]
                         .text.strip()
                     )
                 except:
-                    company = None
-                    from_date, to_date, duration, location = (None, None, None, None)
+                    pass
 
                 experience = Experience(
                     position_title=position_title,
